@@ -1,0 +1,32 @@
+{
+  "name": "k6-performance-testing-framework",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Production-grade K6 performance testing framework targeting test-api.k6.io — smoke, load, stress, spike, soak, and breakpoint tests with custom metrics, HTML reporting, and Grafana dashboards.",
+  "scripts": {
+    "lint": "eslint 'tests/**/*.js' 'lib/**/*.js' 'scenarios/**/*.js'",
+    "format": "prettier --write 'tests/**/*.js' 'lib/**/*.js' 'scenarios/**/*.js'",
+    "smoke": "k6 run tests/smoke/api-smoke.js",
+    "load": "k6 run tests/load/browse-crocodiles.js",
+    "stress": "k6 run tests/stress/auth-stress.js",
+    "spike": "k6 run tests/spike/public-spike.js",
+    "soak": "k6 run tests/soak/steady-state.js",
+    "breakpoint": "k6 run tests/breakpoint/capacity.js",
+    "e2e": "k6 run scenarios/e2e-user-journey.js"
+  },
+  "devDependencies": {
+    "eslint": "^9.0.0",
+    "eslint-plugin-k6": "^0.1.0",
+    "prettier": "^3.2.0"
+  },
+  "keywords": [
+    "k6",
+    "performance-testing",
+    "load-testing",
+    "stress-testing",
+    "grafana",
+    "sre",
+    "qa-automation"
+  ],
+  "license": "MIT"
+}

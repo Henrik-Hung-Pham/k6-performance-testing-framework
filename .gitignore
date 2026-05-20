@@ -1,0 +1,33 @@
+# Test outputs
+results/
+*.json.gz
+summary.html
+summary.json
+*.log
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environments
+.env
+.env.local
+.env.*.local
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Docker
+.docker-data/
+
+# k6 binaries built locally
+xk6-build/
+
+# Claude
+.claude/

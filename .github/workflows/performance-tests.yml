@@ -1,0 +1,117 @@
+name: Performance Tests
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+    inputs:
+      test_suite:
+        description: 'Which suite to run'
+        required: true
+        default: 'smoke'
+        type: choice
+        options:
+          - smoke
+          - load
+          - spike
+          - all
+
+jobs:
+  smoke:
+    name: Smoke Gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install k6
+        run: |
+          curl -fsSL https://dl.k6.io/key.gpg | sudo gpg --dearmor -o /usr/share/keyrings/k6-archive-keyring.gpg
+          echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
+          sudo apt-get update
+          sudo apt-get install -y k6
+
+      - name: Create results directory
+        run: mkdir -p results
+
+      - name: Run smoke test
+        env:
+          ENV: staging
+          K6_SUMMARY_HTML: results/smoke-summary.html
+          K6_SUMMARY_JSON: results/smoke-summary.json
+        run: k6 run --out json=results/smoke-raw.json tests/smoke/api-smoke.js
+
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: smoke-results
+          path: results/
+          retention-days: 14
+
+  load:
+    name: Load Test
+    needs: smoke
+    if: ${{ github.event_name == 'workflow_dispatch' && (github.event.inputs.test_suite == 'load' || github.event.inputs.test_suite == 'all') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install k6
+        run: |
+          curl -fsSL https://dl.k6.io/key.gpg | sudo gpg --dearmor -o /usr/share/keyrings/k6-archive-keyring.gpg
+          echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
+          sudo apt-get update
+          sudo apt-get install -y k6
+
+      - name: Run load test
+        env:
+          ENV: staging
+          K6_SUMMARY_HTML: results/load-summary.html
+          K6_SUMMARY_JSON: results/load-summary.json
+        run: |
+          mkdir -p results
+          k6 run --out json=results/load-raw.json tests/load/browse-ratings.js
+
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: load-results
+          path: results/
+          retention-days: 30
+
+  spike:
+    name: Spike Test
+    needs: smoke
+    if: ${{ github.event_name == 'workflow_dispatch' && (github.event.inputs.test_suite == 'spike' || github.event.inputs.test_suite == 'all') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install k6
+        run: |
+          curl -fsSL https://dl.k6.io/key.gpg | sudo gpg --dearmor -o /usr/share/keyrings/k6-archive-keyring.gpg
+          echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
+          sudo apt-get update
+          sudo apt-get install -y k6
+
+      - name: Run spike test
+        env:
+          ENV: staging
+          K6_SUMMARY_HTML: results/spike-summary.html
+          K6_SUMMARY_JSON: results/spike-summary.json
+        run: |
+          mkdir -p results
+          k6 run --out json=results/spike-raw.json tests/spike/public-spike.js
+
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: spike-results
+          path: results/
+          retention-days: 30
