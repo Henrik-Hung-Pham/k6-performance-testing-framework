@@ -2,8 +2,8 @@
 
 > A production-grade performance testing framework built with [K6](https://k6.io), targeting Grafana's public [QuickPizza](https://quickpizza.grafana.com) demo app. Designed to be **clonable, runnable, and reviewable in under 5 minutes** — every test follows a repeatable structure with SLO-driven thresholds, custom business metrics, and live Grafana dashboards.
 
-[![Performance Tests](https://github.com/your-username/k6-performance-testing-framework/actions/workflows/performance-tests.yml/badge.svg)](https://github.com/your-username/k6-performance-testing-framework/actions/workflows/performance-tests.yml)
-[![Lint](https://github.com/your-username/k6-performance-testing-framework/actions/workflows/lint.yml/badge.svg)](https://github.com/your-username/k6-performance-testing-framework/actions/workflows/lint.yml)
+[![Performance Tests](https://github.com/Henrik-Hung-Pham/k6-performance-testing-framework/actions/workflows/performance-tests.yml/badge.svg)](https://github.com/Henrik-Hung-Pham/k6-performance-testing-framework/actions/workflows/performance-tests.yml)
+[![Lint](https://github.com/Henrik-Hung-Pham/k6-performance-testing-framework/actions/workflows/lint.yml/badge.svg)](https://github.com/Henrik-Hung-Pham/k6-performance-testing-framework/actions/workflows/lint.yml)
 [![k6](https://img.shields.io/badge/k6-v1.0+-7D64FF?logo=k6&logoColor=white)](https://k6.io)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -12,7 +12,7 @@
 ## TL;DR
 
 ```bash
-git clone https://github.com/your-username/k6-performance-testing-framework.git
+git clone https://github.com/Henrik-Hung-Pham/k6-performance-testing-framework.git
 cd k6-performance-testing-framework
 make smoke              # 30-second sanity check against quickpizza.grafana.com
 make up && make load    # full load test with live Grafana dashboard at localhost:3000
@@ -293,4 +293,4 @@ MIT — see [LICENSE](LICENSE).
 
 ---
 
-**Built by [Your Name](https://github.com/your-username)** · [LinkedIn](https://linkedin.com/in/your-handle) · Reach out if you'd like to discuss performance engineering.
+**Built by [Hung Pham](https://github.com/Henrik-Hung-Pham)** · [LinkedIn](https://www.linkedin.com/in/henrik-hung-ph/) · Reach out if you'd like to discuss performance engineering.
