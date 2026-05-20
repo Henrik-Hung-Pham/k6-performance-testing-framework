@@ -2,6 +2,7 @@
   "name": "k6-performance-testing-framework",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "description": "Production-grade K6 performance testing framework targeting test-api.k6.io — smoke, load, stress, spike, soak, and breakpoint tests with custom metrics, HTML reporting, and Grafana dashboards.",
   "scripts": {
     "lint": "eslint 'tests/**/*.js' 'lib/**/*.js' 'scenarios/**/*.js'",
@@ -15,8 +16,9 @@
     "e2e": "k6 run scenarios/e2e-user-journey.js"
   },
   "devDependencies": {
+    "@eslint/js": "^9.0.0",
     "eslint": "^9.0.0",
-    "eslint-plugin-k6": "^0.1.0",
+    "globals": "^15.0.0",
     "prettier": "^3.2.0"
   },
   "keywords": [
