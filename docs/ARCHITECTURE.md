@@ -26,10 +26,9 @@ Pure modules with no global side effects. Each file does one thing.
 | `http/client.js` | `apiClient.get/post/put/patch/del`. Auto-prefixes baseUrl, injects `Authorization: token <X>` (QuickPizza format), applies a baseline check, records `http_errors_total`. |
 | `auth/quickpizza.js` | `STATIC_TOKEN` (no-overhead dev token), `login()` (CSRF + login flow with per-VU token cache). |
 | `data/users.js` | `SharedArray` user pool + `pickUser(vuId)` round-robin. |
-| `data/pizzaRequests.js` | Domain generators (`newPizzaRequest()`, `strictPizzaRequest()`, `newRating(pizzaId)`). |
+| `data/pizzaRequests.js` | Domain generators (`newPizzaRequest()`, `newRating(pizzaId)`). |
 | `metrics/custom.js` | Counter/Rate/Trend exports for business signals. Tests import what they need. |
 | `utils/thinkTime.js` | `jitteredSleep()` (uniform) and `humanThinkTime()` (log-normal). |
-| `utils/logger.js` | Structured JSON logger, off by default. Enable via `-e LOG_LEVEL=debug`. |
 | `reporting/handleSummary.js` | `buildSummary()` — text (stdout) + HTML + JSON. Tests just `export function handleSummary(data) { return buildSummary(data); }`. |
 
 ### `tests/<type>/`

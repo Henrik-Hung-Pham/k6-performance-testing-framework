@@ -86,7 +86,6 @@ Each test is independently runnable, has its own SLO, and produces an HTML repor
 │   ├── data/pizzaRequests.js Domain entity generators (pizza requests, ratings)
 │   ├── metrics/custom.js     Counter/Rate/Trend for business signals
 │   ├── utils/thinkTime.js    Jittered + log-normal sleep
-│   ├── utils/logger.js       Structured JSON logger (off by default)
 │   └── reporting/handleSummary.js   HTML + JSON + stdout summary
 │
 ├── tests/

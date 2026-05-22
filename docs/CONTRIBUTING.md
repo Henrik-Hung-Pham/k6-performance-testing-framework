@@ -61,7 +61,7 @@ export function handleSummary(data) {
 - ❌ Top-level `vus: N, duration: 'Xm'` outside smoke tests — use `scenarios`
 - ❌ Thresholds that always pass (`p(95)<60000`) or always fail (`p(95)<10`)
 - ❌ Mutating shared fixtures inside a VU loop
-- ❌ Logging on every iteration (use `logger` with `LOG_LEVEL=debug` for dev)
+- ❌ Logging on every iteration — k6's stdout is the test summary surface, not a log stream
 - ❌ `Authorization: Bearer <X>` — QuickPizza uses `Authorization: token <X>`. The client handles this; don't reimplement.
 
 ### Recommended
