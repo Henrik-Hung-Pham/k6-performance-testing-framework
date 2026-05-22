@@ -9,6 +9,7 @@
 import { check, group } from 'k6';
 import { apiClient, parseJson } from '../../lib/http/client.js';
 import { login } from '../../lib/auth/quickpizza.js';
+import { pickUser } from '../../lib/data/users.js';
 import { newPizzaRequest, newRating } from '../../lib/data/pizzaRequests.js';
 import { jitteredSleep } from '../../lib/utils/thinkTime.js';
 import { writeSLO, recommendSLO } from '../../config/thresholds.js';
@@ -49,7 +50,10 @@ export const options = {
 
 export default function () {
   const start = Date.now();
-  const token = login();
+  // Round-robin across the fixture pool so a multi-user QuickPizza isn't
+  // hammered by every VU logging in as the same account. Falls back to the
+  // single seeded user on the public deployment.
+  const token = login(pickUser());
   if (!token) return;
 
   let pizzaId = null;
