@@ -162,6 +162,17 @@ k6 run -e ENV=staging tests/load/pizza-lifecycle.js
 make e2e                                 # full persona-weighted journey
 ```
 
+### Reproducible runs
+
+```bash
+k6 run -e SEED=42 tests/smoke/api-smoke.js
+```
+
+Set `SEED=<anything>` and every random draw in generated pizza requests
+and ratings becomes deterministic across runs (each VU gets its own
+deterministic sequence). Useful when bisecting a flaky test, comparing
+two versions of the SUT, or diffing two runs against each other.
+
 ### Run against a self-hosted QuickPizza
 
 ```bash
