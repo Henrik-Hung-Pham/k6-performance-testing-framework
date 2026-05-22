@@ -99,6 +99,17 @@ SELECT percentile("value", 50), percentile("value", 95) FROM "pizza_ingredient_c
    ```
 4. Document it here.
 
+## CI integration: JUnit XML
+
+Every run also emits a JUnit XML file (default `results/summary.xml`, override via
+`K6_SUMMARY_JUNIT`) in the Maven Surefire dialect. Each threshold rule and check
+is exposed as a `<testcase>`, with `<failure>` elements for the ones that didn't
+pass. Wire it into your CI's test-results panel for native pass/fail UI:
+
+- **GitHub Actions:** `mikepenz/action-junit-report@v5`
+- **CircleCI:** `store_test_results: path: results/`
+- **GitLab:** `artifacts.reports.junit: results/*.xml`
+
 ## Reading the summary
 
 K6's end-of-test summary shows custom metrics under the test name. A clean summary tells the story at a glance:
