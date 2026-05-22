@@ -22,6 +22,9 @@ jobs:
   smoke:
     name: Smoke Gate
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
       - uses: actions/checkout@v6
 
@@ -36,11 +39,40 @@ jobs:
         run: mkdir -p results
 
       - name: Run smoke test
+        id: k6
         env:
           ENV: staging
           K6_SUMMARY_HTML: results/smoke-summary.html
           K6_SUMMARY_JSON: results/smoke-summary.json
-        run: k6 run --out json=results/smoke-raw.json tests/smoke/api-smoke.js
+        run: |
+          set -o pipefail
+          k6 run --out json=results/smoke-raw.json --no-color tests/smoke/api-smoke.js \
+            2>&1 | tee results/smoke-stdout.log
+
+      - name: Build PR comment
+        if: always() && github.event_name == 'pull_request'
+        run: |
+          {
+            echo "### k6 smoke test — \`${{ steps.k6.outcome }}\`"
+            echo
+            echo "<details><summary>Full output</summary>"
+            echo
+            echo '```'
+            tail -c 60000 results/smoke-stdout.log 2>/dev/null || echo "no output captured"
+            echo '```'
+            echo
+            echo "</details>"
+            echo
+            echo "Run: [#${{ github.run_number }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) · commit \`${{ github.sha }}\`"
+          } > results/pr-comment.md
+
+      - name: Post k6 summary as sticky PR comment
+        if: always() && github.event_name == 'pull_request'
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: k6-smoke
+          path: results/pr-comment.md
+          recreate: true
 
       - name: Upload results
         if: always()
