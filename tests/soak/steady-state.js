@@ -12,23 +12,15 @@ import { apiClient, parseJson } from '../../lib/http/client.js';
 import { STATIC_TOKEN } from '../../lib/auth/quickpizza.js';
 import { newPizzaRequest } from '../../lib/data/pizzaRequests.js';
 import { jitteredSleep } from '../../lib/utils/thinkTime.js';
+import { soakScenario } from '../../config/scenarios.js';
 import { soakSLO } from '../../config/thresholds.js';
 import { buildSummary } from '../../lib/reporting/handleSummary.js';
 
-const duration = __ENV.SOAK_DURATION || '2h';
+// SOAK_DURATION env override lets dev runs use a 10-minute window instead of 2h.
+const duration = __ENV.SOAK_DURATION || soakScenario.duration;
 
 export const options = {
-  scenarios: {
-    soak: {
-      executor: 'constant-arrival-rate',
-      rate: 10,
-      timeUnit: '1s',
-      duration,
-      preAllocatedVUs: 30,
-      maxVUs: 100,
-      tags: { test_type: 'soak' },
-    },
-  },
+  scenarios: { soak: { ...soakScenario, duration } },
   thresholds: soakSLO,
 };
 
